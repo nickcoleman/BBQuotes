@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		E78A73632EAA7D5F00C6B983 /* ReadMe.md in Sources */ = {isa = PBXBuildFile; fileRef = E78A73622EAA7D5700C6B983 /* ReadMe.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		E78A73472EA98EF900C6B983 /* BBQuotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BBQuotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E78A73622EAA7D5700C6B983 /* ReadMe.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = ReadMe.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -34,6 +39,7 @@
 			children = (
 				E78A73492EA98EF900C6B983 /* BBQuotes */,
 				E78A73482EA98EF900C6B983 /* Products */,
+				E78A73622EAA7D5700C6B983 /* ReadMe.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -119,6 +125,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E78A73632EAA7D5F00C6B983 /* ReadMe.md in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
