@@ -10,11 +10,11 @@ struct FetchService {
     // Swift
     private enum FetchError: Error {
         case badResponse
-        case invalidURL
-        case requestFailed(Error)            // underlying network error (URLError, etc.)
-        case httpError(statusCode: Int)      // non-2xx HTTP status
-        case noData                           // e.g., 204 No Content when body expected
-        case decodingFailed(Error)           // decoding error with underlying Error
+//        case invalidURL
+//        case requestFailed(Error)            // underlying network error (URLError, etc.)
+//        case httpError(statusCode: Int)      // non-2xx HTTP status
+//        case noData                           // e.g., 204 No Content when body expected
+//        case decodingFailed(Error)           // decoding error with underlying Error
     }
     
     private let baseURL = URL(string: "https://breaking-bad-api-six.vercel.app/api")
@@ -28,7 +28,7 @@ struct FetchService {
         let (data, response) = try await URLSession.shared.data(from: fetchURL)
         
         // Handle response
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
             throw FetchError.badResponse
         }
         
@@ -42,14 +42,14 @@ struct FetchService {
     
     func fetchCharacter(_ name: String) async throws -> Char {
         // Construct the fetch URL
-        let charURL = baseURL!.appending(path: "characters")
-        let fetchURL = charURL.appending(queryItems: [URLQueryItem(name: "name", value: name)])
+        let characterURL = baseURL!.appending(path: "characters")
+        let fetchURL = characterURL.appending(queryItems: [URLQueryItem(name: "name", value: name)])
         
         // Fetch the data
         let (data, response) = try await URLSession.shared.data(from: fetchURL)
         
         // Handle response
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
             throw FetchError.badResponse
         }
         
@@ -70,7 +70,7 @@ struct FetchService {
         let (data, response) = try await URLSession.shared.data(from: fetchURL)
         
         // Handle response
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
             throw FetchError.badResponse
         }
         

@@ -8,23 +8,118 @@
 import SwiftUI
 
 struct QuoteView: View {
+    @State var showCharacterInfo = false
     let vm = ViewModel()
+    let show: String
     
     var body: some View {
-        TabView {
-            Tab("Breaking Bad", systemImage: "tortoise") {
-                Text("Breaking Bad View")
+        GeometryReader { geo in
+            ZStack {
+                Image(show.lowercased().replacingOccurrences(of: " ", with: ""))
+                    .resizable()
+                    .frame(width: geo.size.width * 2.7, height: geo.size.height * 1.2)
+                    .padding(.horizontal)
+                Spacer(minLength: 80)
+                VStack {
+                    VStack {
+                        switch vm.status {
+                        case .notStarted:
+                            EmptyView()
+                            
+                        case .fetching:
+                            ProgressView()
+                            
+                        case .success:
+                            // do nothing
+                            Text("\"\(vm.quote.quote)\"")
+                                .minimumScaleFactor(0.5)
+                                .multilineTextAlignment(.center)
+                                .lineLimit(3)
+                                .allowsTightening(true)
+                                .foregroundStyle(.white)
+                                .padding()
+                                .background(.black.opacity(0.5))
+                                .clipShape(RoundedRectangle(cornerRadius: 25))
+                            
+                            
+                            ZStack (alignment: .bottom) {
+                                AsyncImage(url: vm.character.images[0]) { image in
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                
+                                
+                                Text(vm.character.name)
+                                    .foregroundStyle(.white)
+                                    .padding(10)
+                                    .frame(maxWidth: .infinity)
+                                    .background(.ultraThinMaterial)
+                                    .shadow(
+                                        color: Color (
+                                            "\(show.replacingOccurrences(of: " ", with: ""))Shadow"
+                                        ),
+                                        radius: 2
+                                    )
+                                
+                            }
+                            .clipShape(RoundedRectangle(cornerRadius: 25))
+                            .onTapGesture {
+                                showCharacterInfo = true
+                            }
+                            
+                        case .failed(let error):
+                            Text(error.localizedDescription)
+                        }
+                        
+                        Spacer()
+                    }
+                        
+                    Button {
+                        // action here
+                        Task {
+                            await vm.getData(for: show)
+                                
+                        }
+                    } label: {
+                        Text("Get Random Quote")
+                            .font(.title)
+                            .foregroundStyle(.white)
+                            .padding()
+                            .background(
+                                Color(
+                                    "\(show.replacingOccurrences(of: " ", with: ""))Button"
+                                )
+                            )
+                            .clipShape(RoundedRectangle(cornerRadius: 25))
+                            .shadow(
+                                color: Color(
+                                    "\(show.replacingOccurrences(of: " ", with: ""))Shadow"
+                                ),
+                                radius: 4
+                            )
+                    }
+                    Spacer(minLength: 40)
+                }
+                .frame(width: geo.size.width/1.1, height: geo.size.height/1.3)
+                
+                
+                
             }
-            Tab("Better Call Saul", systemImage: "briefcase") {
-                Text("Better Call Saul View")
-            }
+            .frame(width: geo.size.width, height: geo.size.height)
         }
-        .preferredColorScheme(.dark)
-        .tint(.orange)
+        .ignoresSafeArea()
+        .sheet(isPresented: $showCharacterInfo) {
+            CharacterView(character: vm.character, show: show)
+        }
     }
 }
 
 #Preview {
-    QuoteView()
+    QuoteView(show: "Breaking Bad")
+//    QuoteView(show: "Better Call Saul")
         .preferredColorScheme(.dark)
 }
+

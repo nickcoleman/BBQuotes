@@ -39,7 +39,7 @@ class ViewModel {
         
         
         let characterData = try! Data(
-            contentsOf: Bundle.main.url(forResource: "samplechar", withExtension: "json")!
+            contentsOf: Bundle.main.url(forResource: "samplecharacter", withExtension: "json")!
         )
         character = try! decoder.decode(Char.self, from: characterData)
     }
